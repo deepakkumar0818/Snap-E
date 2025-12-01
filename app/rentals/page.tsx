@@ -77,12 +77,12 @@ export default function RentalsPage() {
 
   const getStatusBadge = (status: RentalStatus) => {
     const colors = {
-      [RentalStatus.ONGOING]: 'bg-snap-teal-100 text-snap-teal-800',
-      [RentalStatus.COMPLETED]: 'bg-green-100 text-green-800',
-      [RentalStatus.CANCELLED]: 'bg-snap-coral-100 text-snap-coral-800',
+      [RentalStatus.ONGOING]: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-sm',
+      [RentalStatus.COMPLETED]: 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm',
+      [RentalStatus.CANCELLED]: 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-sm',
     };
     return (
-      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colors[status]}`}>
+      <span className={`px-3 py-1 inline-flex text-xs font-bold rounded-full ${colors[status]}`}>
         {status}
       </span>
     );
@@ -129,25 +129,25 @@ export default function RentalsPage() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
+      <div className="sm:flex sm:items-center mb-8">
         <div className="sm:flex-auto">
-          <h1 className="text-3xl font-bold text-gray-900">Hub Operations</h1>
-          <p className="mt-2 text-base text-gray-600">Manage vehicle rentals</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Hub Operations</h1>
+          <p className="text-lg text-gray-400">Manage vehicle rentals and bookings</p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link href="/rentals/new">
-            <Button>Start New Rental</Button>
+            <Button className="shadow-lg">+ Start New Rental</Button>
           </Link>
         </div>
       </div>
 
       <div className="mt-6">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+        <div className="mb-6 bg-gray-800 rounded-xl shadow-md border border-gray-700 p-5">
+          <label className="block text-sm font-semibold text-gray-300 mb-3">Filter by Status</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="block w-64 rounded-md border-gray-300 shadow-sm focus:border-snap-teal-500 focus:ring-snap-teal-500 sm:text-sm"
+            className="block w-full max-w-xs rounded-lg border-2 border-gray-600 bg-gray-700 text-gray-200 px-4 py-2.5 text-sm font-medium shadow-sm transition-all focus:border-snap-teal-500 focus:outline-none focus:ring-2 focus:ring-snap-teal-500/20 hover:border-gray-500"
           >
             <option value="">All Statuses</option>
             {Object.values(RentalStatus).map((status) => (
@@ -159,10 +159,17 @@ export default function RentalsPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-gray-500">Loading...</div>
+          <div className="text-center py-16">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-snap-teal-500 mb-4"></div>
+            <p className="text-gray-400 font-medium">Loading rentals...</p>
+          </div>
         ) : rentals.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No rentals found</p>
+          <div className="text-center py-16 bg-gray-800 rounded-xl shadow-md border border-gray-700">
+            <svg className="mx-auto h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p className="text-lg font-semibold text-gray-300 mb-1">No rentals found</p>
+            <p className="text-gray-500">Try adjusting your filters or start a new rental</p>
           </div>
         ) : (
           <Table data={rentals} columns={columns} />

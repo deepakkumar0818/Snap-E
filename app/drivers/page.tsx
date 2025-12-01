@@ -117,17 +117,17 @@ export default function DriversPage() {
   const getStatusBadge = (status: DriverStatus, isBlacklisted: boolean) => {
     if (isBlacklisted) {
       return (
-        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-snap-coral-100 text-snap-coral-800">
+        <span className="px-3 py-1 inline-flex text-xs font-bold rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white shadow-sm">
           BLACKLISTED
         </span>
       );
     }
     const colors = {
-      [DriverStatus.ACTIVE]: 'bg-green-100 text-green-800',
-      [DriverStatus.INACTIVE]: 'bg-gray-100 text-gray-800',
+      [DriverStatus.ACTIVE]: 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm',
+      [DriverStatus.INACTIVE]: 'bg-gradient-to-r from-gray-400 to-gray-500 text-white shadow-sm',
     };
     return (
-      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colors[status]}`}>
+      <span className={`px-3 py-1 inline-flex text-xs font-bold rounded-full ${colors[status]}`}>
         {status}
       </span>
     );
@@ -176,25 +176,25 @@ export default function DriversPage() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
+      <div className="sm:flex sm:items-center mb-8">
         <div className="sm:flex-auto">
-          <h1 className="text-3xl font-bold text-gray-900">Driver Master</h1>
-          <p className="mt-2 text-base text-gray-600">Manage all drivers</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Driver Master</h1>
+          <p className="text-lg text-gray-400">Manage all drivers in the system</p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link href="/drivers/new">
-            <Button>Add Driver</Button>
+            <Button className="shadow-lg">+ Add Driver</Button>
           </Link>
         </div>
       </div>
 
       <div className="mt-6">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+        <div className="mb-6 bg-gray-800 rounded-xl shadow-md border border-gray-700 p-5">
+          <label className="block text-sm font-semibold text-gray-300 mb-3">Filter by Status</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="block w-64 rounded-md border-gray-300 shadow-sm focus:border-snap-teal-500 focus:ring-snap-teal-500 sm:text-sm"
+            className="block w-full max-w-xs rounded-lg border-2 border-gray-600 bg-gray-700 text-gray-200 px-4 py-2.5 text-sm font-medium shadow-sm transition-all focus:border-snap-teal-500 focus:outline-none focus:ring-2 focus:ring-snap-teal-500/20 hover:border-gray-500"
           >
             <option value="">All Statuses</option>
             {Object.values(DriverStatus).map((status) => (
@@ -206,10 +206,17 @@ export default function DriversPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-gray-500">Loading...</div>
+          <div className="text-center py-16">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-snap-teal-500 mb-4"></div>
+            <p className="text-gray-400 font-medium">Loading drivers...</p>
+          </div>
         ) : drivers.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No drivers found</p>
+          <div className="text-center py-16 bg-gray-800 rounded-xl shadow-md border border-gray-700">
+            <svg className="mx-auto h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <p className="text-lg font-semibold text-gray-300 mb-1">No drivers found</p>
+            <p className="text-gray-500">Try adjusting your filters or add a new driver</p>
           </div>
         ) : (
           <Table data={drivers} columns={columns} />

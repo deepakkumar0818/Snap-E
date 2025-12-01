@@ -129,24 +129,31 @@ export default function HubManagersPage() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
+      <div className="sm:flex sm:items-center mb-8">
         <div className="sm:flex-auto">
-          <h1 className="text-3xl font-bold text-gray-900">Hub Manager Master</h1>
-          <p className="mt-2 text-base text-gray-600">Manage all hub managers</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Hub Manager Master</h1>
+          <p className="text-lg text-gray-400">Manage all hub managers across locations</p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link href="/hub-managers/new">
-            <Button>Add Hub Manager</Button>
+            <Button className="shadow-lg">+ Add Hub Manager</Button>
           </Link>
         </div>
       </div>
 
       <div className="mt-6">
         {loading ? (
-          <div className="text-center py-12 text-gray-500">Loading...</div>
+          <div className="text-center py-16">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-snap-teal-500 mb-4"></div>
+            <p className="text-gray-400 font-medium">Loading hub managers...</p>
+          </div>
         ) : hubManagers.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No hub managers found</p>
+          <div className="text-center py-16 bg-gray-800 rounded-xl shadow-md border border-gray-700">
+            <svg className="mx-auto h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <p className="text-lg font-semibold text-gray-300 mb-1">No hub managers found</p>
+            <p className="text-gray-500">Add a new hub manager to get started</p>
           </div>
         ) : (
           <Table data={hubManagers} columns={columns} />

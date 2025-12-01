@@ -23,31 +23,34 @@ export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-900 flex">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-gray-600 bg-opacity-75 z-20 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-75 z-20 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar - Fixed position, doesn't scroll */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-64 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-2xl border-r border-gray-700 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo - Fixed at top */}
-          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 flex-shrink-0">
-            <h1 className="text-2xl font-bold">
-              <span className="text-gray-900">Snap</span>
-              <span className="text-snap-coral-500">-E</span>
-            </h1>
+          <div className="flex items-center justify-between h-20 px-6 border-b border-gray-700 bg-gray-800 flex-shrink-0 shadow-lg">
+            <Link href="/" className="flex items-center">
+              <img
+                src="/images/Snapelogo.webp"
+                alt="Snap-E Logo"
+                className="h-10 w-auto object-contain brightness-0 invert"
+              />
+            </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
+              className="lg:hidden text-gray-400 hover:text-gray-200 transition-colors p-1 rounded-md hover:bg-gray-700"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -56,7 +59,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
 
           {/* Navigation - Scrollable only if content overflows */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -64,19 +67,22 @@ export default function Layout({ children }: LayoutProps) {
                   key={item.name}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                  className={`flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-snap-teal-50 text-snap-teal-700 border-l-4 border-snap-teal-500'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-snap-teal-600'
+                      ? 'bg-gradient-to-r from-snap-teal-500 to-snap-teal-600 text-white shadow-lg shadow-snap-teal-500/50 transform scale-[1.02]'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white hover:shadow-md'
                   }`}
                 >
                   <svg
-                    className={`mr-3 h-5 w-5 ${isActive ? 'text-snap-teal-500' : 'text-gray-400'}`}
+                    className={`mr-3 h-5 w-5 transition-colors ${
+                      isActive ? 'text-white' : 'text-gray-400'
+                    }`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    strokeWidth={isActive ? 2.5 : 2}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                    <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                   </svg>
                   {item.name}
                 </Link>
@@ -89,26 +95,29 @@ export default function Layout({ children }: LayoutProps) {
       {/* Main content area - Only this scrolls */}
       <div className="flex-1 flex flex-col min-w-0 lg:ml-64">
         {/* Mobile header */}
-        <header className="lg:hidden bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
+        <header className="lg:hidden bg-gray-800 shadow-xl border-b border-gray-700 flex-shrink-0 sticky top-0 z-10">
           <div className="flex items-center justify-between h-16 px-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-400 hover:text-gray-200 transition-colors p-2 rounded-lg hover:bg-gray-700"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h1 className="text-xl font-bold">
-              <span className="text-gray-900">Snap</span>
-              <span className="text-snap-coral-500">-E</span>
-            </h1>
+            <Link href="/" className="flex items-center">
+              <img
+                src="/images/Snapelogo.webp"
+                alt="Snap-E Logo"
+                className="h-9 w-auto object-contain brightness-0 invert"
+              />
+            </Link>
             <div className="w-6" /> {/* Spacer for centering */}
           </div>
         </header>
 
         {/* Page content - Scrollable */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto bg-gray-900">
           <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
             {children}
           </div>
