@@ -35,27 +35,21 @@ export default function HubManagersPage() {
   }, []);
 
   const fetchHubManagers = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/hub-managers');
-      const result = await response.json();
-      
-      // Always use dummy data for demo purposes
-      // If you want to use real API data when available, uncomment the condition below
-      // if (result.success && result.data && result.data.length >= 5) {
-      //   setHubManagers(result.data);
-      //   return;
-      // }
-      
-      // Use dummy data
-      setHubManagers(dummyHubManagers);
-    } catch (error) {
-      console.error('Error fetching hub managers:', error);
-      // Use dummy data on error
-      setHubManagers(dummyHubManagers);
-    } finally {
-      setLoading(false);
-    }
+    // Use dummy data immediately for fast loading
+    setLoading(true);
+    setHubManagers(dummyHubManagers);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // try {
+    //   const response = await fetch('/api/hub-managers');
+    //   const result = await response.json();
+    //   if (result.success && result.data && result.data.length >= 5) {
+    //     setHubManagers(result.data);
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching hub managers:', error);
+    // }
   };
 
   const handleDelete = async (id: string) => {

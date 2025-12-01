@@ -64,36 +64,28 @@ export default function DriversPage() {
   }, [statusFilter]);
 
   const fetchDrivers = async () => {
-    try {
-      setLoading(true);
-      const url = statusFilter ? `/api/drivers?status=${statusFilter}` : '/api/drivers';
-      const response = await fetch(url);
-      const result = await response.json();
-      
-      // Always use dummy data for demo purposes
-      // If you want to use real API data when available, uncomment the condition below
-      // if (result.success && result.data && result.data.length >= 30) {
-      //   setDrivers(result.data);
-      //   return;
-      // }
-      
-      // Use dummy data
-      let filteredDummy = dummyDrivers;
-      if (statusFilter) {
-        filteredDummy = dummyDrivers.filter(driver => driver.status === statusFilter);
-      }
-      setDrivers(filteredDummy);
-    } catch (error) {
-      console.error('Error fetching drivers:', error);
-      // Use dummy data on error
-      let filteredDummy = dummyDrivers;
-      if (statusFilter) {
-        filteredDummy = dummyDrivers.filter(driver => driver.status === statusFilter);
-      }
-      setDrivers(filteredDummy);
-    } finally {
-      setLoading(false);
+    // Use dummy data immediately for fast loading
+    setLoading(true);
+    
+    // Filter dummy data based on status filter
+    let filteredDummy = dummyDrivers;
+    if (statusFilter) {
+      filteredDummy = dummyDrivers.filter(driver => driver.status === statusFilter);
     }
+    setDrivers(filteredDummy);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // try {
+    //   const url = statusFilter ? `/api/drivers?status=${statusFilter}` : '/api/drivers';
+    //   const response = await fetch(url);
+    //   const result = await response.json();
+    //   if (result.success && result.data && result.data.length >= 30) {
+    //     setDrivers(result.data);
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching drivers:', error);
+    // }
   };
 
   const handleDelete = async (id: string) => {

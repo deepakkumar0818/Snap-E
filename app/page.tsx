@@ -24,54 +24,32 @@ const dummyStats: DashboardStats = {
 
 export default function Home() {
   const [stats, setStats] = useState<DashboardStats>(dummyStats);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
+  // Use dummy data immediately - no API calls needed for demo
+  // If you want to use real API data, uncomment the useEffect below
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        // Fetch all data in parallel
-        const [assetsRes, rentalsRes, maintenanceRes, purchasesRes, driversRes, hubManagersRes] = await Promise.all([
-          fetch('/api/assets'),
-          fetch('/api/rentals?status=ACTIVE'),
-          fetch('/api/maintenance?status=PENDING'),
-          fetch('/api/purchases?status=PENDING'),
-          fetch('/api/drivers'),
-          fetch('/api/hub-managers'),
-        ]);
-
-        const assetsData = assetsRes.ok ? await assetsRes.json() : { data: [] };
-        const rentalsData = rentalsRes.ok ? await rentalsRes.json() : { data: [] };
-        const maintenanceData = maintenanceRes.ok ? await maintenanceRes.json() : { data: [] };
-        const purchasesData = purchasesRes.ok ? await purchasesRes.json() : { data: [] };
-        const driversData = driversRes.ok ? await driversRes.json() : { data: [] };
-        const hubManagersData = hubManagersRes.ok ? await hubManagersRes.json() : { data: [] };
-
-        // Always use dummy data for demo purposes
-        // If you want to use real API data when available, uncomment the condition below
-        // if (assetsData.data && assetsData.data.length >= 30) {
-        //   setStats({
-        //     totalAssets: assetsData.data.length,
-        //     activeRentals: rentalsData.data?.length || dummyStats.activeRentals,
-        //     pendingMaintenance: maintenanceData.data?.length || dummyStats.pendingMaintenance,
-        //     purchaseRequests: purchasesData.data?.length || dummyStats.purchaseRequests,
-        //     totalDrivers: driversData.data?.length || dummyStats.totalDrivers,
-        //     totalHubManagers: hubManagersData.data?.length || dummyStats.totalHubManagers,
-        //   });
-        //   return;
-        // }
-
-        // Use dummy data
-        setStats(dummyStats);
-      } catch (error) {
-        // Use dummy data on error
-        console.error('Error fetching stats:', error);
-        setStats(dummyStats);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStats();
+    // Set dummy data immediately
+    setStats(dummyStats);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // const fetchStats = async () => {
+    //   try {
+    //     const [assetsRes, rentalsRes, maintenanceRes, purchasesRes, driversRes, hubManagersRes] = await Promise.all([
+    //       fetch('/api/assets'),
+    //       fetch('/api/rentals?status=ACTIVE'),
+    //       fetch('/api/maintenance?status=PENDING'),
+    //       fetch('/api/purchases?status=PENDING'),
+    //       fetch('/api/drivers'),
+    //       fetch('/api/hub-managers'),
+    //     ]);
+    //     // Process API responses if needed
+    //   } catch (error) {
+    //     console.error('Error fetching stats:', error);
+    //   }
+    // };
+    // fetchStats();
   }, []);
 
   return (

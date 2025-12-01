@@ -159,29 +159,28 @@ export default function PurchasesPage() {
   }, [statusFilter]);
 
   const fetchRequests = async () => {
-    try {
-      setLoading(true);
-      const url = statusFilter ? `/api/purchases?status=${statusFilter}` : '/api/purchases';
-      const response = await fetch(url);
-      const result = await response.json();
-      
-      // Always use dummy data for demo purposes
-      let filteredData = dummyPurchaseRequests;
-      if (statusFilter) {
-        filteredData = dummyPurchaseRequests.filter(req => req.status === statusFilter);
-      }
-      setRequests(filteredData);
-    } catch (error) {
-      console.error('Error fetching purchase requests:', error);
-      // Use dummy data on error
-      let filteredData = dummyPurchaseRequests;
-      if (statusFilter) {
-        filteredData = dummyPurchaseRequests.filter(req => req.status === statusFilter);
-      }
-      setRequests(filteredData);
-    } finally {
-      setLoading(false);
+    // Use dummy data immediately for fast loading
+    setLoading(true);
+    
+    // Filter dummy data based on status filter
+    let filteredData = dummyPurchaseRequests;
+    if (statusFilter) {
+      filteredData = dummyPurchaseRequests.filter(req => req.status === statusFilter);
     }
+    setRequests(filteredData);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // try {
+    //   const url = statusFilter ? `/api/purchases?status=${statusFilter}` : '/api/purchases';
+    //   const response = await fetch(url);
+    //   const result = await response.json();
+    //   if (result.success && result.data) {
+    //     setRequests(result.data);
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching purchase requests:', error);
+    // }
   };
 
   const handleDelete = async (id: string) => {

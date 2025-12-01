@@ -392,36 +392,28 @@ export default function AssetsPage() {
   }, [statusFilter]);
 
   const fetchAssets = async () => {
-    try {
-      setLoading(true);
-      const url = statusFilter ? `/api/assets?status=${statusFilter}` : '/api/assets';
-      const response = await fetch(url);
-      const result = await response.json();
-      
-      // Always use dummy data for demo purposes
-      // If you want to use real API data when available, uncomment the condition below
-      // if (result.success && result.data && result.data.length >= 5) {
-      //   setAssets(result.data);
-      //   return;
-      // }
-      
-      // Use dummy data
-      let filteredDummy = dummyAssets;
-      if (statusFilter) {
-        filteredDummy = dummyAssets.filter(asset => asset.status === statusFilter);
-      }
-      setAssets(filteredDummy);
-    } catch (error) {
-      console.error('Error fetching assets:', error);
-      // Use dummy data on error
-      let filteredDummy = dummyAssets;
-      if (statusFilter) {
-        filteredDummy = dummyAssets.filter(asset => asset.status === statusFilter);
-      }
-      setAssets(filteredDummy);
-    } finally {
-      setLoading(false);
+    // Use dummy data immediately for fast loading
+    setLoading(true);
+    
+    // Filter dummy data based on status filter
+    let filteredDummy = dummyAssets;
+    if (statusFilter) {
+      filteredDummy = dummyAssets.filter(asset => asset.status === statusFilter);
     }
+    setAssets(filteredDummy);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // try {
+    //   const url = statusFilter ? `/api/assets?status=${statusFilter}` : '/api/assets';
+    //   const response = await fetch(url);
+    //   const result = await response.json();
+    //   if (result.success && result.data && result.data.length >= 5) {
+    //     setAssets(result.data);
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching assets:', error);
+    // }
   };
 
   const handleDelete = async (id: string) => {

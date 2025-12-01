@@ -45,29 +45,28 @@ export default function MaintenancePage() {
   }, [statusFilter]);
 
   const fetchRequests = async () => {
-    try {
-      setLoading(true);
-      const url = statusFilter ? `/api/maintenance?status=${statusFilter}` : '/api/maintenance';
-      const response = await fetch(url);
-      const result = await response.json();
-      
-      // Always use dummy data for demo purposes
-      let filteredData = dummyMaintenanceRequests;
-      if (statusFilter) {
-        filteredData = dummyMaintenanceRequests.filter(req => req.status === statusFilter);
-      }
-      setRequests(filteredData);
-    } catch (error) {
-      console.error('Error fetching maintenance requests:', error);
-      // Use dummy data on error
-      let filteredData = dummyMaintenanceRequests;
-      if (statusFilter) {
-        filteredData = dummyMaintenanceRequests.filter(req => req.status === statusFilter);
-      }
-      setRequests(filteredData);
-    } finally {
-      setLoading(false);
+    // Use dummy data immediately for fast loading
+    setLoading(true);
+    
+    // Filter dummy data based on status filter
+    let filteredData = dummyMaintenanceRequests;
+    if (statusFilter) {
+      filteredData = dummyMaintenanceRequests.filter(req => req.status === statusFilter);
     }
+    setRequests(filteredData);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // try {
+    //   const url = statusFilter ? `/api/maintenance?status=${statusFilter}` : '/api/maintenance';
+    //   const response = await fetch(url);
+    //   const result = await response.json();
+    //   if (result.success && result.data) {
+    //     setRequests(result.data);
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching maintenance requests:', error);
+    // }
   };
 
   const handleDelete = async (id: string) => {

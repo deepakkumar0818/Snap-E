@@ -51,36 +51,28 @@ export default function RentalsPage() {
   }, [statusFilter]);
 
   const fetchRentals = async () => {
-    try {
-      setLoading(true);
-      const url = statusFilter ? `/api/rentals?status=${statusFilter}` : '/api/rentals';
-      const response = await fetch(url);
-      const result = await response.json();
-      
-      // Always use dummy data for demo purposes
-      // If you want to use real API data when available, uncomment the condition below
-      // if (result.success && result.data && result.data.length >= 15) {
-      //   setRentals(result.data);
-      //   return;
-      // }
-      
-      // Use dummy data
-      let filteredDummy = dummyRentals;
-      if (statusFilter) {
-        filteredDummy = dummyRentals.filter(rental => rental.status === statusFilter);
-      }
-      setRentals(filteredDummy);
-    } catch (error) {
-      console.error('Error fetching rentals:', error);
-      // Use dummy data on error
-      let filteredDummy = dummyRentals;
-      if (statusFilter) {
-        filteredDummy = dummyRentals.filter(rental => rental.status === statusFilter);
-      }
-      setRentals(filteredDummy);
-    } finally {
-      setLoading(false);
+    // Use dummy data immediately for fast loading
+    setLoading(true);
+    
+    // Filter dummy data based on status filter
+    let filteredDummy = dummyRentals;
+    if (statusFilter) {
+      filteredDummy = dummyRentals.filter(rental => rental.status === statusFilter);
     }
+    setRentals(filteredDummy);
+    setLoading(false);
+    
+    // Optional: Fetch real data in the background (commented out for performance)
+    // try {
+    //   const url = statusFilter ? `/api/rentals?status=${statusFilter}` : '/api/rentals';
+    //   const response = await fetch(url);
+    //   const result = await response.json();
+    //   if (result.success && result.data && result.data.length >= 15) {
+    //     setRentals(result.data);
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching rentals:', error);
+    // }
   };
 
   const getStatusBadge = (status: RentalStatus) => {
