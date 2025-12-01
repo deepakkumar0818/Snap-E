@@ -9,6 +9,7 @@ interface Driver {
   _id: string;
   name: string;
   phone: string;
+  isBlacklisted?: boolean;
 }
 
 interface Asset {

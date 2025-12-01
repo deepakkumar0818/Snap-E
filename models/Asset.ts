@@ -11,7 +11,7 @@ export interface IDocumentDetail {
   metadata?: Record<string, any>;
 }
 
-export interface IAsset extends Document {
+export interface IAsset extends Omit<Document, 'model'> {
   registrationNumber: string;
   model: string;
   variant: string;
